@@ -82,5 +82,5 @@ ProcessAndSaveSummary <- function(filename)
 {
     #A Single Function to process and save data summary into a file of given filename
     x <- summarizedata(ReadSensorData())
-    write.table(x, file = filename)
+    write.table(x, file = filename, row.names = FALSE)
 }
