@@ -45,17 +45,42 @@ ReadSensorData <- function()
     return(newset)
 }
 
-subjectactivitymeans <- function(setdata)
+SummarizeData <- function(setdata)
 {
     #This function accepts a data frame and summarizes it with means based on activity and subject
+    
+    #Based on BOTH activities and subjects
     setdata$code <- paste(setdata$activity,setdata$subject,sep = ",")
     newset <- group_by(setdata,setdata$code)
     k <- summarise_all(newset,mean,na.rm = TRUE)
-    x <- lapply(as.character(k$`setdata$code`),strsplit,split = ",")
+    #x <- lapply(as.character(k$`setdata$code`),strsplit,split = ",")
     k$activity <- unlist(lapply(as.character(k$`setdata$code`),strsplit,split = ","))[seq(1,(nrow(k)*2-1),by=2)]
     k <- k[,c(-1,-1*ncol(k))]
     k <- arrange(k,activity,subject)
-    return(k)
     
+    #Means Based on ACTIVITIES for ALL subjects
+    newset <- group_by(setdata,setdata$activity)
+    l <- summarise_all(newset,mean,na.rm = TRUE)
+    l <- l[,c(-2,-1*ncol(l))]
+    l[,2] <- rep("ALL",times = nrow(l))
+    names(l)<-names(k)
     
+    #Means Based on SUBJECTS for ALL activities
+    newset <- group_by(setdata,setdata$subject)
+    m <- summarise_all(newset,mean,na.rm = TRUE)
+    m[,3] <- m[,1]
+    m[,2] <- rep("ALL",times = nrow(m))
+    m <- m[,c(-1,-1*ncol(m))]
+    names(m)<-names(k)
+    
+    summarized <- rbind(l,m,k)
+    
+    return(summarized)
+}
+
+ProcessAndSaveSummary <- function(filename)
+{
+    #A Single Function to process and save data summary into a file of given filename
+    x <- summarizedata(ReadSensorData())
+    write.table(x, file = filename)
 }
