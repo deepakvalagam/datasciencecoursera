@@ -11,7 +11,7 @@ ReadSensorData function does the following:
     3. Name the columns appropriately
     4. Extracts mean and standard deviation data alone
     5. Rename the "Activity" appropriately
-After above processes, it returns a dataframe with parameters shown in "summary_features_info.md" and "summary_features.txt"
+After above processes, it returns a dataframe with parameters shown in "codebook.md" and "summary_codes.txt"
 
 ## 2. SummarizeData(setdata)
 summararizedata function takes in the processed output dataframe of ReadSensorData and does:
