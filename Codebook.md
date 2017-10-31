@@ -48,4 +48,4 @@ tBodyGyroJerkMean
 
 
 
-The complete list of variables of each feature vector is available in 'summary_features.txt'
+The complete list of variables of each feature vector is available in 'summary_codes.txt'
